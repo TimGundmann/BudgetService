@@ -1,0 +1,7 @@
+version: '2'
+services:
+  budget:
+    restart: "always"
+    build: .
+    ports:
+     - "9999:8080"
