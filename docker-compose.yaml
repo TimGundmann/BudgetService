@@ -1,6 +1,7 @@
 version: '2'
 services:
   budget:
+    network_mode: "host"
     restart: "always"
     build: .
     ports:
