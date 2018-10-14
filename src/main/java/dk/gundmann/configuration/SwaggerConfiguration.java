@@ -1,4 +1,4 @@
-package dk.gundmann.budget.configuration;
+package dk.gundmann.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +18,11 @@ public class SwaggerConfiguration extends WebMvcConfigurationSupport {
 
 	@Bean
 	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
-				.paths(PathSelectors.any()).build();
+		return new Docket(DocumentationType.SWAGGER_2)
+				.select()
+				.apis(RequestHandlerSelectors.basePackage("dk.gundmann.budget"))
+			    .paths(PathSelectors.ant("/budget/*"))
+			    .build();
 	}
 	
 	@Override
@@ -32,4 +35,5 @@ public class SwaggerConfiguration extends WebMvcConfigurationSupport {
 		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
 		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
+	
 }

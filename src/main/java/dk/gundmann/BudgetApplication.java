@@ -1,4 +1,4 @@
-package dk.gundmann.budget;
+package dk.gundmann;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

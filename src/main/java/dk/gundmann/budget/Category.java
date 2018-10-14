@@ -3,6 +3,7 @@ package dk.gundmann.budget;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
+import java.util.function.IntPredicate;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -11,17 +12,17 @@ import lombok.ToString;
 
 @Getter
 @Builder
-@EqualsAndHashCode(of = "month")
+@EqualsAndHashCode(of = "name")
 @ToString
-public class Month {
+public class Category {
 
-	private int month;
-	private double balance;
+	private String name;
 	
 	@Builder.Default
-	private List<Expense> expenses = newArrayList();
-	
-	@Builder.Default
-	private List<Income> incomes = newArrayList();
+	private List<Month> months = newArrayList();
 
+	public double getTotalExpenses() {
+		return 0;
+	}
+	
 }

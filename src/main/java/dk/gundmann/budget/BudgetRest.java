@@ -2,6 +2,7 @@ package dk.gundmann.budget;
 
 import java.io.IOException;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +20,7 @@ public class BudgetRest {
 		
 	}
 
-	@PostMapping("/make")
+	@PostMapping(path = "/make", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public Budget make(@RequestParam("file") MultipartFile file) throws IOException {
 		return budgetService.makeBudget(file.getInputStream());
 	}

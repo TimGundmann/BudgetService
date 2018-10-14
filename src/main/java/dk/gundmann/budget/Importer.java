@@ -1,12 +1,12 @@
 package dk.gundmann.budget;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.function.Function;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.opencsv.CSVParserBuilder;
@@ -14,7 +14,11 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
 public class Importer {
-
+	
+	public static final String INDCOME = "Indcome";
+	
+	private List<Category> categories = newArrayList();
+	
 	public static Budget importExpenses(InputStream inputStream) {
 		try {
 			return new Importer().importFrom(inputStream);
@@ -26,17 +30,51 @@ public class Importer {
 
 	public Budget importFrom(InputStream inputStream) throws IOException {
 		return Budget.builder()
-				.months(makeMonths(inputStream))
+				.categories(newArrayList(makeCategories(inputStream)))
 				.build();
 	}
 
-	private List<Month> makeMonths(InputStream inputStream) throws IOException {
+	private Set<Category> makeCategories(InputStream inputStream) throws IOException {
 		return createCsvReader(inputStream).readAll().stream()
-				.collect(Collectors.groupingBy(s -> importMonth(s)))
-				.entrySet()
-				.stream()
-				.map(importMonth())
-				.collect(Collectors.toList());
+			.map(e -> createOrGetCategory(e))
+			.collect(Collectors.toSet());
+	}
+
+	private Category createOrGetCategory(String[] line) {
+		Category category = createCategory(line);
+		if (categories.contains(category)) {
+			category = categories.get(categories.indexOf(category));
+		} else {
+			categories.add(category);
+		}
+		return addMonth(category, line);
+	}
+
+	private Category createCategory(String[] line) {
+		String name = INDCOME;
+		if (isValueExpenses(line)) {
+			name = line[1];
+		}
+		return Category.builder()
+				.name(name)
+				.build();
+	}
+
+	private Category addMonth(Category category, String[] line) {
+		Month month = Month.builder()
+				.month(extractMonth(line[0]))
+				.build();
+		if (category.getMonths().contains(month)) {
+			month = category.getMonths().get(category.getMonths().indexOf(month));
+		} else {
+			category.getMonths().add(month);
+		}
+		if (isValueExpenses(line)) {
+			month.getExpenses().add(importExpenses(line));
+		} else {
+			month.getIncomes().add(importIncome(line));
+		}
+		return category;
 	}
 
 	private CSVReader createCsvReader(InputStream inputStream) {
@@ -50,37 +88,16 @@ public class Importer {
 		return csvReader;
 	}
 
-	private Function<? super Entry<Month, List<String[]>>, ? extends Month> importMonth() {
-		return e -> { 
-			Month month = e.getKey();
-			month.getExpenses().addAll(importExpenses(month, e.getValue())); 
-			month.getIncomes().addAll(importIncome(month, e.getValue())); 
-			return month; 
-		};
-	}
-
-	private Month importMonth(String[] lines) {
-		return Month.builder()
-				.month(extractMonth(lines[0]))
+	private Expense importExpenses(String[] line) {
+		return Expense.builder()
+				.value(extractValue(line))
 				.build();
 	}
-	
-	private List<Expense> importExpenses(Month month, List<String[]> lines) {
-		return lines.stream()
-				.filter(s -> isSameMonth(month, s) && isValueExpenses(s))
-				.map(e -> Expense.builder()
-							.value(extractValue(e))
-							.build())
-				.collect(Collectors.toList());
-	}
 
-	private Collection<? extends Income> importIncome(Month month, List<String[]> lines) {
-		return lines.stream()
-				.filter(s -> isSameMonth(month, s) && !isValueExpenses(s))
-				.map(e -> Income.builder()
-							.value(extractValue(e))
-							.build())
-				.collect(Collectors.toList());
+	private Income importIncome(String[] line) {
+		return Income.builder()
+					.value(extractValue(line))
+					.build();
 	}
 
 	private boolean isValueExpenses(String[] s) {
@@ -93,10 +110,6 @@ public class Importer {
 		} catch (Exception e) {
 			throw new BudgetException("error parsing line: " + line, e);
 		}
-	}
-
-	private boolean isSameMonth(Month month, String[] s) {
-		return extractMonth(s[0]) == month.getMonth();
 	}
 
 	private int extractMonth(String date) {

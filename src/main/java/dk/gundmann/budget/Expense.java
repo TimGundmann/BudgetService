@@ -12,5 +12,5 @@ import lombok.ToString;
 public class Expense {
 	
 	private double value;
-
+	
 }
