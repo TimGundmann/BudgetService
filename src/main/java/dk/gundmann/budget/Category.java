@@ -3,7 +3,6 @@ package dk.gundmann.budget;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
-import java.util.function.IntPredicate;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
