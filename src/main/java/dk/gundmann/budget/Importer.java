@@ -2,23 +2,30 @@ package dk.gundmann.budget;
 
 import static com.google.common.collect.Lists.newArrayList;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.apache.tika.parser.txt.CharsetDetector;
 
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
 public class Importer {
-	
+
 	public static final String INDCOME = "Indcome";
-	
+
 	private List<Category> categories = newArrayList();
-	
+
 	public static Budget importExpenses(InputStream inputStream) {
 		try {
 			return new Importer().importFrom(inputStream);
@@ -29,15 +36,12 @@ public class Importer {
 	}
 
 	public Budget importFrom(InputStream inputStream) throws IOException {
-		return Budget.builder()
-				.categories(newArrayList(makeCategories(inputStream)))
-				.build();
+		return Budget.builder().categories(newArrayList(makeCategories(inputStream))).build();
 	}
 
 	private Set<Category> makeCategories(InputStream inputStream) throws IOException {
-		return createCsvReader(inputStream).readAll().stream()
-			.map(e -> createOrGetCategory(e))
-			.collect(Collectors.toSet());
+		return createCsvReader(inputStream).readAll().stream().map(e -> createOrGetCategory(e))
+				.collect(Collectors.toSet());
 	}
 
 	private Category createOrGetCategory(String[] line) {
@@ -55,15 +59,11 @@ public class Importer {
 		if (isValueExpenses(line)) {
 			name = line[1];
 		}
-		return Category.builder()
-				.name(name)
-				.build();
+		return Category.builder().name(name).build();
 	}
 
 	private Category addMonth(Category category, String[] line) {
-		Month month = Month.builder()
-				.month(extractMonth(line[0]))
-				.build();
+		Month month = Month.builder().month(extractMonth(line[0])).build();
 		if (category.getMonths().contains(month)) {
 			month = category.getMonths().get(category.getMonths().indexOf(month));
 		} else {
@@ -77,27 +77,19 @@ public class Importer {
 		return category;
 	}
 
-	private CSVReader createCsvReader(InputStream inputStream) {
-		CSVReader csvReader = new CSVReaderBuilder(new InputStreamReader(inputStream))
-				.withCSVParser(new CSVParserBuilder()
-						.withSeparator(';')
-						.withIgnoreLeadingWhiteSpace(true)
-						.build())
-				.withSkipLines(2)
-				.build();
+	private CSVReader createCsvReader(InputStream inputStream) throws UnsupportedEncodingException {
+		CSVReader csvReader = new CSVReaderBuilder(new InputStreamReader(inputStream, Charset.forName("windows-1258")))
+				.withCSVParser(new CSVParserBuilder().withSeparator(';').withIgnoreLeadingWhiteSpace(true).build())
+				.withSkipLines(2).build();
 		return csvReader;
 	}
 
 	private Expense importExpenses(String[] line) {
-		return Expense.builder()
-				.value(extractValue(line))
-				.build();
+		return Expense.builder().value(extractValue(line)).build();
 	}
 
 	private Income importIncome(String[] line) {
-		return Income.builder()
-					.value(extractValue(line))
-					.build();
+		return Income.builder().value(extractValue(line)).build();
 	}
 
 	private boolean isValueExpenses(String[] s) {
