@@ -24,4 +24,8 @@ public class Month {
 	@Builder.Default
 	private List<Income> incomes = newArrayList();
 
+	public double getTotalExpenses() {
+		return this.expenses.stream().mapToDouble(e -> e.getValue()).sum();
+	}
+
 }
