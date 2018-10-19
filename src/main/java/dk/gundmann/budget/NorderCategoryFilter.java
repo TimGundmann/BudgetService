@@ -17,9 +17,11 @@ public class NorderCategoryFilter implements CategoryFilter {
 
 	private String removeTailingNumbers(String categoryName) {
 		char[] chars = categoryName.toCharArray();
-		for (int i = chars.length-2; i > -1; i--) {
-			if (!Character.isDigit(chars[i])) {				
-				return String.copyValueOf(Arrays.copyOfRange(chars, 0, i));
+		if (chars.length > 0 && Character.isDigit(chars[chars.length - 1])) {
+			for (int i = chars.length - 2; i > -1; i--) {
+				if (!Character.isDigit(chars[i])) {
+					return String.copyValueOf(Arrays.copyOfRange(chars, 0, i));
+				}
 			}
 		}
 		return categoryName;

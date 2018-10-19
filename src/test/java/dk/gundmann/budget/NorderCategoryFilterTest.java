@@ -10,8 +10,15 @@ public class NorderCategoryFilterTest {
 	private NorderCategoryFilter filter = new NorderCategoryFilter();
 	
 	@Test
-	public void verifyThatTheLastFDigitesAreRemoved() throws Exception {
+	public void verifyThatTheLastDigitesAreRemoved() throws Exception {
 		// given when then
 		assertThat(filter.filter("test 0234")).isEqualTo("test");
 	}
+	
+	@Test
+	public void givenNoDigitsWillNotRemoveAny() throws Exception {
+		// given when then
+		assertThat(filter.filter("test")).isEqualTo("test");
+	}
+
 }

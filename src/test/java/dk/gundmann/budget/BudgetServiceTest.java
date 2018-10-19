@@ -100,12 +100,12 @@ public class BudgetServiceTest {
 	public void givenMoreLinesWithDiffrentCategoriesWillCollectThem() {
 		// given 
 		InputStream stream = makeCSVFileWith(
-				"26-09-2018;Type 1;;-200,00;0",
-				"26-09-2018;Type 2;;-100,00;0",
-				"26-10-2018;Type 1;;-20,00;0",
-				"26-10-2018;Type 2;;-10,00;0",
-				"26-09-2018;Income 1;;220,00;0",
-				"26-10-2018;Income 2;;110,00;0");
+				"26-09-2018;Type One;;-200,00;0",
+				"26-09-2018;Type Two;;-100,00;0",
+				"26-10-2018;Type One;;-20,00;0",
+				"26-10-2018;Type Two;;-10,00;0",
+				"26-09-2018;Income One;;220,00;0",
+				"26-10-2018;Income Two;;110,00;0");
 		
 		// then
 		List<Category> categories = budgetService.makeBudget(stream).getCategories();
@@ -113,10 +113,10 @@ public class BudgetServiceTest {
 		// when 
 		assertThat(categories).describedAs("to many categories").hasSize(3);
 		assertThat(categories).describedAs("wrong category name").contains(Category.builder()
-				.name("Type 1")
+				.name("Type One")
 				.build());
 		assertThat(categories).describedAs("wrong category name").contains(Category.builder()
-				.name("Type 2")
+				.name("Type Two")
 				.build());
 		assertThat(categories).describedAs("wrong category name").contains(Category.builder()
 				.name(Importer.INDCOME)
