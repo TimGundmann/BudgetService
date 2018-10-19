@@ -77,12 +77,12 @@ public class BudgetServiceTest {
 		// given 
 		InputStream stream = makeCSVFileWith(
 				"26-10-2018;category 1;;-214,90;0",
-				"26-10-2018;;;15,90;0");
+				"26-10-2018;category 2;;15,90;0");
 		
 		// when then
 		List<Category> categories = budgetService.makeBudget(stream).getCategories();
 		Month monthExpenses = categories.get(categories.indexOf(Category.builder()
-					.name("category 1")
+					.name("category")
 					.build()))
 				.getMonths().get(0);
 		Month monthIncomes = categories.get(categories.indexOf(Category.builder()

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class BudgetService {
 	
 	public Budget makeBudget(InputStream inputStream) {
-		return Importer.importExpenses(inputStream);
+		return Importer.importExpenses(inputStream, new NorderCategoryFilter());
 	}
 
 }
