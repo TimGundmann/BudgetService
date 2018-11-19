@@ -28,4 +28,8 @@ public class Month {
 		return this.expenses.stream().mapToDouble(e -> e.getValue()).sum();
 	}
 
+	public double getTotalIncome() {
+		return this.incomes.stream().mapToDouble(e -> e.getValue()).sum();
+	}
+	
 }
