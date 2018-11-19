@@ -49,15 +49,20 @@ public class BudgetServiceTest {
 	public void givenTwoLinesWithSameMonthsWillCollectOnlyOneMonth() {
 		// given 
 		InputStream stream = makeCSVFileWith(
-				"26-09-2018;;;-200,00;0",
-				"26-09-2018;;;-10,00;0");
+				"26-09-2018;;;-139,00",
+				"26-09-2018;;;-139,00",
+				"26-09-2018;;;-60,00",
+				"26-09-2018;;;-69,41",
+				"26-09-2018;;;-51,5",
+				"26-09-2018;;;-61,5",
+				"26-09-2018;;;-55,66");
 		
 		// when 
 		List<Month> months = budgetService.makeBudget(stream).getCategories().get(0).getMonths();
 		
 		// then
 		assertThat(months).describedAs("only one month expected").hasSize(1);
-		assertThat(months.get(0).getTotalExpenses()).describedAs("total is wrong").isEqualTo(-210.00);
+		assertThat(months.get(0).getTotalExpenses()).describedAs("total is wrong").isEqualTo(-576.07);
 		
 	}
 	

@@ -2,6 +2,8 @@ package dk.gundmann.budget;
 
 import static com.google.common.collect.Lists.newArrayList;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import lombok.Builder;
@@ -25,11 +27,15 @@ public class Month {
 	private List<Income> incomes = newArrayList();
 
 	public double getTotalExpenses() {
-		return this.expenses.stream().mapToDouble(e -> e.getValue()).sum();
+	    return new BigDecimal(this.expenses.stream().mapToDouble(e -> e.getValue()).sum())
+	    		.setScale(2, RoundingMode.HALF_UP)
+	    		.doubleValue();
 	}
 
 	public double getTotalIncome() {
-		return this.incomes.stream().mapToDouble(e -> e.getValue()).sum();
+		return new BigDecimal(this.incomes.stream().mapToDouble(e -> e.getValue()).sum())
+				.setScale(2, RoundingMode.HALF_UP)
+				.doubleValue();
 	}
 	
 }
