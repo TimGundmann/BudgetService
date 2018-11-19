@@ -13,5 +13,9 @@ import lombok.ToString;
 public class Income {
 	
 	private double value;
+	
+	public boolean isIncome() {
+		return true;
+	}
 
 }
