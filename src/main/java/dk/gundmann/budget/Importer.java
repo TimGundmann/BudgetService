@@ -17,8 +17,6 @@ import com.opencsv.CSVReaderBuilder;
 
 public class Importer {
 
-	public static final String INDCOME = "Indcome";
-
 	private List<Category> categories = newArrayList();
 
 	private CategoryFilter filter;
@@ -67,7 +65,7 @@ public class Importer {
 	}
 
 	private Category createCategory(String[] line) {
-		String name = INDCOME;
+		String name = Income.INDCOME;
 		if (isValueExpenses(line)) {
 			name = this.filter.filter(line[1]);
 		}

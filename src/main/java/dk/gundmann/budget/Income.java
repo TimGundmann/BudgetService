@@ -11,11 +11,9 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class Income {
-	
+
+	public static final String INDCOME = "Indcome";
+
 	private double value;
 	
-	public boolean isIncome() {
-		return true;
-	}
-
 }

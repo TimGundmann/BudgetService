@@ -24,4 +24,8 @@ public class Category {
 		return 0;
 	}
 	
+	public boolean isIncome() {
+		return Income.INDCOME.equals(getName());
+	}
+	
 }

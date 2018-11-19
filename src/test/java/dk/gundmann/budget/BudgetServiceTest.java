@@ -86,7 +86,7 @@ public class BudgetServiceTest {
 					.build()))
 				.getMonths().get(0);
 		Month monthIncomes = categories.get(categories.indexOf(Category.builder()
-				.name(Importer.INDCOME)
+				.name(Income.INDCOME)
 				.build()))
 			.getMonths().get(0);
 		
@@ -119,7 +119,7 @@ public class BudgetServiceTest {
 				.name("Type Two")
 				.build());
 		assertThat(categories).describedAs("wrong category name").contains(Category.builder()
-				.name(Importer.INDCOME)
+				.name(Income.INDCOME)
 				.build());
 	}
 
