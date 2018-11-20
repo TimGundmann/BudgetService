@@ -38,7 +38,7 @@ public class BudgetServiceTest {
 					.months(newArrayList(Month.builder()
 							.month(9)
 							.expenses(newArrayList(Expense.builder()
-							.value(-214.90)
+							.value(214.90)
 							.build()))
 						.build()))
 					.build()))
@@ -62,7 +62,7 @@ public class BudgetServiceTest {
 		
 		// then
 		assertThat(months).describedAs("only one month expected").hasSize(1);
-		assertThat(months.get(0).getTotalExpenses()).describedAs("total is wrong").isEqualTo(-576.07);
+		assertThat(months.get(0).getTotalExpenses()).describedAs("total is wrong").isEqualTo(576.07);
 		
 	}
 	
@@ -74,7 +74,9 @@ public class BudgetServiceTest {
 				"26-09-2018;;;-15,90;0");
 		
 		// when then
-		assertThat(budgetService.makeBudget(stream).getCategories().get(0).getMonths()).describedAs("two month expected").hasSize(2);
+		assertThat(budgetService.makeBudget(stream).getCategories().get(0).getMonths())
+			.describedAs("two month expected")
+			.hasSize(2);
 	}
 
 	@Test

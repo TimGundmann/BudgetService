@@ -90,7 +90,7 @@ public class Importer {
 	}
 
 	private Expense importExpenses(String[] line) {
-		return Expense.builder().value(extractValue(line)).build();
+		return Expense.builder().value(Math.abs(extractValue(line))).build();
 	}
 
 	private Income importIncome(String[] line) {
