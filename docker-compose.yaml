@@ -5,3 +5,15 @@ services:
     build: .
     ports:
      - "9999:8080"
+  db:
+    image: mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: budget
+      MYSQL_USER: budget
+      MYSQL_PASSWORD: budget
+    volumes:
+      - /usr/share/budget/userdata:/var/lib/mysql
