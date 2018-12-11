@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-public class BudgetServiceTest {
+public class BudgetServiceMakeTest {
 
 	private static final String CSV_HEADER_LINE = "\nBogført;Tekst;Rentedato;Beløb;Saldo";
 	
-	private BudgetService budgetService = new BudgetService();
+	private BudgetService budgetService = new BudgetService(null);
 	
 	@Test
 	public void givenAAccountStatementFileWillCreateABudget() {
