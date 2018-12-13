@@ -22,8 +22,12 @@ public class BudgetService {
 		repository.save(budget);
 	}
 
-	public void delete(Budget budget) {
-		repository.delete(budget);		
+	public void delete(String name) {
+		repository.delete(get(name));		
 	}
 
+	public Budget get(String name) {
+		return repository.getOne(name);		
+	}
+	
 }

@@ -97,5 +97,41 @@ public class BudgetServicePersistenTest {
 		assertThat(actual.getExpenses()).hasSize(1);
 		assertThat(actual.getIncomes()).hasSize(1);
 	}
+
+	@Test
+	public void verifyThatABudgetIsDeleted() {
+		// given
+		budgetService.save(Budget.builder().name("test")
+				.categories(newArrayList(Category.builder()
+						.months(newArrayList(Month.builder()
+								.expenses(newArrayList(Expense.builder().build()))
+								.incomes(newArrayList(Income.builder().build()))
+								.build()))
+						.build()))
+				.build());
+		
+		// when 
+		budgetService.delete("test");
+		
+		// then
+		assertThat(entityManager.find(Budget.class, "test")).isNull();
+	}
+	
+	@Test
+	public void verifyThatABudgetIsRetrunded() {
+		// given
+		budgetService.save(Budget.builder().name("test")
+				.categories(newArrayList(Category.builder()
+						.months(newArrayList(Month.builder()
+								.expenses(newArrayList(Expense.builder().build()))
+								.incomes(newArrayList(Income.builder().build()))
+								.build()))
+						.build()))
+				.build());
+		
+		// when then
+		assertThat(budgetService.get("test")).isNotNull();
+	}
+	
 	
 }
