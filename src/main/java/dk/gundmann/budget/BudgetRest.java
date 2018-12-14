@@ -19,8 +19,7 @@ public class BudgetRest {
 	private BudgetService budgetService;
 
 	public BudgetRest(BudgetService budgetService) {
-		this.budgetService = budgetService;
-		
+		this.budgetService = budgetService;	
 	}
 
 	@PostMapping(path = "/make", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
