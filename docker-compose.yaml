@@ -11,7 +11,7 @@ services:
     ports:
       - 3306:3306
     environment:
-      - "TZ=Europe/Amsterdam" 
+      TZ: "Europe/Amsterdam" 
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: budget
       MYSQL_USER: budget
